@@ -25,5 +25,6 @@ RUN poetry build && /venv/bin/pip install dist/*.whl
 FROM base as final
 
 COPY --from=builder /venv /venv
-COPY deploy/web-app/entrypoint.sh src/ .
+COPY deploy/web-app/product-service/entrypoint.sh .
+COPY src/ .
 CMD ["./entrypoint.sh"]
