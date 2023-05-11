@@ -3,5 +3,7 @@ services:
     build:
       context: ../../
       dockerfile: ./deploy/web-app/product-service/Dockerfile
+  web:
+    build: nginx
     ports:
-      - "5000:5000"
+      - "80:80"
