@@ -1,0 +1,2 @@
+db:
+  url: "mysql+mysqlconnector://root:password@db/products"

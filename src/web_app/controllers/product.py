@@ -21,11 +21,15 @@ class ProductListController(MethodView):
     def post(self):
         create_request = request.json
 
-        new_id = max(product.id for product in self._product_repository.get_all()) + 1
+        new_id = max([product.id for product in self._product_repository.get_all()], default=0) + 1
         new_product = Product(new_id, create_request["name"])
         self._product_repository.create_product(new_product)
 
-        return jsonify(new_product), 201
+        new_product_response = {
+            "id": new_product.id,
+            "name": new_product.name
+        }
+        return jsonify(new_product_response), 201
 
 
 class ProductController(MethodView):
@@ -50,7 +54,10 @@ class ProductController(MethodView):
             return f"Product with id '{product_id}' not found!", 404
 
         product.name = update_request["name"]
-        return jsonify(product), 200
+        self._product_repository.update_product(product)
+
+        patched_product_response = {"id": product.id, "name": product.name}
+        return jsonify(patched_product_response), 200
 
     def delete(self, product_id):
         product = self._product_repository.get_product(product_id)
