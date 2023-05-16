@@ -4,7 +4,7 @@ from src.core.entities.product import Product
 from src.core.interfaces.product_repository import IProductRepository
 
 
-class InMemoryProductRepository(IProductRepository):
+class FakeProductRepository(IProductRepository):
 
     def __init__(self, products: List[Product] = None):
         self._products = {p.id: p for p in products}

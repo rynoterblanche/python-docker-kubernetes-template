@@ -1,21 +1,20 @@
 from dependency_injector.containers import DeclarativeContainer, WiringConfiguration
-from dependency_injector.providers import Factory
+from dependency_injector.providers import Factory, Singleton, Configuration
 
-from src.core.entities.product import Product
-from src.infrastructure.data.repository.in_memory_product_repository import InMemoryProductRepository
+from src.infrastructure.data.orm.database import Database
+from src.infrastructure.data.repository.sql_alchemy_product_repository import SqlAlchemyProductRepository
 
 
 class AppContainer(DeclarativeContainer):
-    products = [
-        Product(1, "PS4"),
-        Product(2, "PS5"),
-    ]
-
     wiring_config = WiringConfiguration(
         packages=[
             ".controllers",
         ],
     )
 
-    product_repository = Factory(InMemoryProductRepository,
-                                 products=products)
+    config = Configuration(yaml_files=["config.yml"])
+
+    db = Singleton(Database, db_url=config.db.url)
+
+    product_repository = Factory(SqlAlchemyProductRepository,
+                                 session_factory=db.provided.session)
