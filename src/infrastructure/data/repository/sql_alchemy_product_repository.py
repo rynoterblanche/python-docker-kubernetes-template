@@ -1,3 +1,4 @@
+import logging
 from contextlib import AbstractContextManager
 from typing import List, Callable
 
@@ -10,6 +11,8 @@ from src.infrastructure.data.errors.not_found_error import NotFoundError
 from src.infrastructure.data.orm.mappers.product_orm_entity_mapper import ProductOrmEntityMapper
 from src.infrastructure.data.orm.models.product_model import ProductModel
 
+log = logging.getLogger(__name__)
+
 
 class SqlAlchemyProductRepository(IProductRepository):
 
@@ -18,12 +21,14 @@ class SqlAlchemyProductRepository(IProductRepository):
         self._session_factory = session_factory
 
     def get_all(self) -> List[Product]:
+        log.debug("Query all products")
         with self._session_factory() as session:
             rows = session.query(ProductModel).all()
             products = [ProductOrmEntityMapper.map_to_entity(row) for row in rows]
             return products
 
     def get_product(self, product_id: int) -> Product:
+        log.debug(f"Find product by id '{product_id}'")
         with self._session_factory() as session:
             instance = session.query(ProductModel).get(product_id)
             if not instance:
@@ -32,6 +37,7 @@ class SqlAlchemyProductRepository(IProductRepository):
             return product
 
     def create_product(self, product: Product) -> None:
+        log.debug(f"Create product : '{product}'")
         with self._session_factory() as session:
             model = ProductOrmEntityMapper.map_to_model(product)
             session.add(model)
@@ -39,6 +45,7 @@ class SqlAlchemyProductRepository(IProductRepository):
             session.refresh(model)
 
     def update_product(self, product: Product) -> None:
+        log.debug(f"Update product by id  : '{product}'")
         with self._session_factory() as session:
             instance = session.query(ProductModel).get(product.id)
             if not instance:
@@ -47,6 +54,7 @@ class SqlAlchemyProductRepository(IProductRepository):
             session.commit()
 
     def delete_product(self, product_id: int) -> None:
+        log.debug(f"Delete product by id '{product_id}'")
         with self._session_factory() as session:
             instance = session.query(ProductModel).get(product_id)
             if not instance:
