@@ -6,7 +6,7 @@ from src.web_app.containers import AppContainer
 from src.web_app.extensions.register_routes import register_routes
 
 if __name__ == "__main__":
-    logging.config.fileConfig("logging.ini", disable_existing_loggers=False)
+    logging.config.fileConfig("/config/logging.ini", disable_existing_loggers=False)
 
     container = AppContainer()
 

@@ -26,7 +26,5 @@ FROM base as final
 
 COPY --from=builder /venv /venv
 COPY src/  .
-COPY config.yml .
-COPY logging.ini .
 COPY deploy/web-app/product-service/entrypoint.sh .
 CMD ["./entrypoint.sh"]

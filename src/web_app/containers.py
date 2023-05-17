@@ -12,7 +12,7 @@ class AppContainer(DeclarativeContainer):
         ],
     )
 
-    config = Configuration(yaml_files=["config.yml"])
+    config = Configuration(yaml_files=["/config/config.yml"])
 
     db = Singleton(Database, db_url=config.db.url)
 
