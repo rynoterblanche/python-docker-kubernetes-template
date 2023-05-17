@@ -9,24 +9,23 @@ from src.core.interfaces.product_repository import IProductRepository
 from src.infrastructure.data.repository.sql_alchemy_product_repository import ProductNotFoundError
 from src.web_app.containers import AppContainer
 
-log = logging.getLogger(__name__)
-
 
 class ProductListController(MethodView):
 
     @inject
     def __init__(self, product_repository: IProductRepository = Provide[AppContainer.product_repository]):
         self._product_repository = product_repository
+        self._logger = logging.getLogger(__name__)
 
     def get(self):
-        log.debug("GET /products")
+        self._logger.debug("GET /products")
         product_list_response = [{"id": p.id, "name": p.name} for p in self._product_repository.get_all()]
         return jsonify(product_list_response)
 
     def post(self):
         create_request = request.json
 
-        log.debug(f"POST /products : {create_request}")
+        self._logger.debug(f"POST /products : {create_request}")
 
         new_id = max([product.id for product in self._product_repository.get_all()], default=0) + 1
         new_product = Product(new_id, create_request["name"])
@@ -44,9 +43,10 @@ class ProductController(MethodView):
     @inject
     def __init__(self, product_repository: IProductRepository = Provide[AppContainer.product_repository]):
         self._product_repository = product_repository
+        self._logger = logging.getLogger(self.__class__.__name__)
 
     def get(self, product_id):
-        log.debug(f"GET /products/{product_id}")
+        self._logger.debug(f"GET /products/{product_id}")
 
         try:
             product = self._product_repository.get_product(product_id)
@@ -59,7 +59,7 @@ class ProductController(MethodView):
     def patch(self, product_id):
         update_request = request.json
 
-        log.debug(f"PATCH /products/{product_id} : {update_request}")
+        self._logger.debug(f"PATCH /products/{product_id} : {update_request}")
 
         try:
             product = self._product_repository.get_product(product_id)
@@ -73,7 +73,7 @@ class ProductController(MethodView):
         return jsonify(patched_product_response), 200
 
     def delete(self, product_id):
-        log.debug(f"DELETE /products/{product_id}")
+        self._logger.debug(f"DELETE /products/{product_id}")
 
         try:
             self._product_repository.delete_product(product_id)
