@@ -1,2 +1,16 @@
+logging:
+  version: 1
+  formatters:
+    simpleFormatter:
+      format: "%(asctime)s %(levelname)-8s %(name)-10s: %(message)s"
+  handlers:
+    consoleHandler:
+      class: "logging.StreamHandler"
+      level: "DEBUG"
+      formatter: "simpleFormatter"
+  root:
+    level: "DEBUG"
+    handlers: [ "consoleHandler" ]
+
 db:
   url: "mysql+mysqlconnector://root:password@db/products"
