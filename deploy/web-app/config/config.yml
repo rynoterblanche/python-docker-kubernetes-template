@@ -13,4 +13,7 @@ logging:
     handlers: [ "consoleHandler" ]
 
 db:
-  url: "mysql+mysqlconnector://root:password@db/products"
+  product_service:
+    host: "db"
+    username: "root"
+    database: "products"
