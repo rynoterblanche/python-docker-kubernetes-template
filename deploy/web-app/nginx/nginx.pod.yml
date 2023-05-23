@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-server
+  labels:
+    app: nginx
+    rel: stable
+spec:
+  containers:
+    - name: nginx-server
+      image: nginx:alpine
+      ports:
+        - containerPort: 80
+      resources:
+
+
+# kubectl create -f nginx.pod.yml --save-config
+# kubectl describe pod nginx-server
+# kubectl apply -f nginx.pod.yml
+# kubectl exec nginx-server -it sh
+# kubectl edit -f nginx.pod.yml
+# kubectl delete -f nginx.pod.yml
