@@ -17,17 +17,21 @@ Example deployment config using StorageClass, PersistentVolume & PersistentValue
 
    **Linux:** `/tmp/data/db`
 
-3. Start up the Pod:
+3. Configure the MySQL password:
+
+   `kubectl create secret generic db-passwords --from-literal=db-password='password' --from-literal=db-root-password='password'`
+
+4. Start up the Pod:
 
    `kubectl create -f mysql.deployment.yml`
 
-4. Run `kubectl get pods` to see the pod.
-5. Run `kubectl exec [msql-pod-name] -it sh` to shell into the container. Run the `msql` command to make sure the
+5. Run `kubectl get pods` to see the pod.
+6. Run `kubectl exec [msql-pod-name] -it sh` to shell into the container. Run the `msql` command to make sure the
    database is working. Type `exit` to exit the shell.
 
    Note: If you have a tool that can hit MySQL externally you can `kubectl port-forward` to the pod to expose 3306.
 
-6. Delete the mongo Pod: `kubectl delete pod [msql-pod-name]`
-7. Once the pod is deleted, run `kubectl get pv` and note the reclaim policy that's shown and the status (should show
+7. Delete the mongo Pod: `kubectl delete pod [msql-pod-name]`
+8. Once the pod is deleted, run `kubectl get pv` and note the reclaim policy that's shown and the status (should show
    Bound since the policy was Retain)
-8. Delete everything else: `kubectl delete -f mysql.deployment.yml`
+9. Delete everything else: `kubectl delete -f mysql.deployment.yml`
