@@ -5,8 +5,7 @@ metadata:
     app: mysql-env
   name: mysql-env
 data:
-  #NO - not a good idea to store a password in a ConfigMap (demo only). See the "secrets" folder for another demo of this.
-  MYSQL_ROOT_PASSWORD: password
+  MYSQL_USER: db_user
 
 ---
 
@@ -100,18 +99,38 @@ spec:
             - containerPort: 3306
               name: mysql
           volumeMounts:
+            # Example of configuring a secrets volume (but we use env vars here instead)
+            - name: secrets
+              mountPath: /etc/db-passwords
+              readOnly: true
             - name: mysql-persistent-storage
               mountPath: /data/db
           env:
-            - name: MYSQL_ROOT_PASSWORD
+            # Pull standard config from config map
+            - name: MYSQL_USER
               valueFrom:
                 configMapKeyRef:
-                  key: MYSQL_ROOT_PASSWORD
+                  key: MYSQL_USER
                   name: mysql-env
+            # Pull passwords from secrets
+            - name: MYSQL_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-passwords
+                  key: db-password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-passwords
+                  key: db-root-password
           livenessProbe:
             tcpSocket:
               port: 3306
       volumes:
+        # Example of configuring a secrets volume (but we use env vars here instead)
+        - name: secrets
+          secret:
+            secretName: db-passwords
         - name: mysql-persistent-storage
           persistentVolumeClaim:
             claimName: mysql-pvc
