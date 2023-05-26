@@ -1,0 +1,54 @@
+# Usage: See README docs
+
+
+networks:
+  frontend:
+  backend:
+
+services:
+
+  nginx:
+    container_name: nginx
+    image: ${DOCKER_ACCT}/nginx
+    build:
+      context: .
+      dockerfile: .docker/nginx.dockerfile
+      target: ${APP_ENV}
+    networks:
+      - frontend
+    depends_on:
+      - products-api
+    ports:
+      - "80:80"
+
+  products-api:
+    container_name: products-api
+    image: ${DOCKER_ACCT}/products-api
+    build:
+      context: .
+      dockerfile: .docker/product-service.dockerfile
+      target: ${APP_ENV}
+    networks:
+      - frontend
+      - backend
+    env_file:
+      - ./.docker/env/product-service.${APP_ENV}.env
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    container_name: mysql
+    image: ${DOCKER_ACCT}/mysql
+    build:
+      context: .
+      dockerfile: .docker/mysql.dockerfile
+      target: ${APP_ENV}
+    networks:
+      - backend
+    volumes:
+      - "db-volume:/var/lib/mysql"
+    env_file:
+      - ./.docker/env/mysql.${APP_ENV}.env
+
+volumes:
+  db-volume:
