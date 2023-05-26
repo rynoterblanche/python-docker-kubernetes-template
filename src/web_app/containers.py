@@ -5,12 +5,7 @@ import logging.config
 
 from src.infrastructure.data.orm.database import Database
 from src.infrastructure.data.repository.sql_alchemy_product_repository import SqlAlchemyProductRepository
-
-
-def get_database_pw():
-    db_password = open("/run/secrets/db_password")
-    password = db_password.read()
-    return password
+from src.web_app.environment import Env
 
 
 def get_database_url(db_config: Configuration):
@@ -18,9 +13,8 @@ def get_database_url(db_config: Configuration):
     username = product_service["username"]
     host = product_service["host"]
     database = product_service["database"]
-    password = get_database_pw()
+    password = Env.get("MYSQL_USER_PASSWORD")
     db_url = f"mysql+mysqlconnector://{username}:{password}@{host}/{database}"
-    print(db_url)
     return db_url
 
 
