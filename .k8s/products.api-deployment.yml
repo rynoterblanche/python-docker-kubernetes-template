@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: products-api-env
+  name: products-api-env
+data:
+  PRODUCTS_API_ENV: production
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    api.service: products-api
+  name: products-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      api.service: products-api
+  template:
+    metadata:
+      labels:
+        api.service: products-api
+    spec:
+      containers:
+        - env:
+            - name: API_ENV
+              valueFrom:
+                configMapKeyRef:
+                  key: PRODUCTS_API_ENV
+                  name: products-api-env
+            - name: MYSQL_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-passwords
+                  key: db-password
+          image: vatie/products-api
+          imagePullPolicy: IfNotPresent
+          name: products-api
+          ports:
+            - containerPort: 5000
+          resources: { }
