@@ -1,4 +1,4 @@
-from src.web_app.controllers.product import ProductListController, ProductController
+from src.product_service.controllers.product import ProductListController, ProductController
 
 
 def register_routes(app):

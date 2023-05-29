@@ -7,7 +7,7 @@ from flask.views import MethodView
 from src.core.entities.product import Product
 from src.core.interfaces.product_repository import IProductRepository
 from src.infrastructure.data.repository.sql_alchemy_product_repository import ProductNotFoundError
-from src.web_app.containers import AppContainer
+from src.product_service.containers import AppContainer
 
 
 class ProductListController(MethodView):

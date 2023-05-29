@@ -1,7 +1,7 @@
 from flask import Flask
 
-from src.web_app.containers import AppContainer
-from src.web_app.extensions.register_routes import register_routes
+from src.product_service.containers import AppContainer
+from src.product_service.extensions.register_routes import register_routes
 
 if __name__ == "__main__":
     container = AppContainer()
