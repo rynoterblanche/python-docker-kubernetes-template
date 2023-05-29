@@ -5,7 +5,7 @@ import logging.config
 
 from src.infrastructure.data.orm.database import Database
 from src.infrastructure.data.repository.sql_alchemy_product_repository import SqlAlchemyProductRepository
-from src.web_app.environment import Env
+from src.shared.environment import Env
 
 
 def get_database_url(db_config: Configuration):
