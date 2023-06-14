@@ -4,4 +4,4 @@ set -e
 
 . /venv/bin/activate
 
-python ./web_app/app.py
+python ./product_service/app.py
