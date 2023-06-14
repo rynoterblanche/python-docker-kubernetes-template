@@ -1,4 +1,4 @@
-from typing import Optional
+from argparse import ArgumentParser
 
 from flask import Flask
 
@@ -6,10 +6,9 @@ from src.product_service.containers import AppContainer
 from src.product_service.extensions.register_routes import register_routes
 
 
-def create_app(config: Optional[dict] = None):
+def create_app(config) -> Flask:
     container = AppContainer()
-    if config:
-        container.config.from_dict(config)
+    container.config.from_yaml(config)
 
     container.init_resources()
 
@@ -25,5 +24,20 @@ def create_app(config: Optional[dict] = None):
 
 
 if __name__ == "__main__":
-    app = create_app()
+    default_config_path = "/config/config.yml"
+
+    parser = ArgumentParser(
+        prog="ProductService",
+        description="RESTful API to Products.")
+    parser.add_argument(
+        "--config",
+        required=False,
+        default=default_config_path,
+        help=f"Defaults to `{default_config_path}` if not provided.")
+
+    args = parser.parse_args()
+
+    config_source = args.config
+
+    app = create_app(config_source)
     app.run(debug=True, host="0.0.0.0")
