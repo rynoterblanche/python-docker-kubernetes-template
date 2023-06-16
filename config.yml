@@ -12,8 +12,6 @@ logging:
     level: "DEBUG"
     handlers: [ "consoleHandler" ]
 
+# Using a shared in-memory sqlite db for dev
 db:
-  product_service:
-    host: "db"
-    username: "root"
-    database: "products"
+  url: "sqlite:///file:dev_db?mode=memory&cache=shared&uri=true"
