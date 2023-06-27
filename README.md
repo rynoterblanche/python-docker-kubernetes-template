@@ -49,12 +49,35 @@ The application follows a Clean Architecture design.
 
 ## Local Development
 
+### Installation
+
+In Linux, macOS or Windows (WSL):
+
+```shell
+# Install Poetry
+make setup
+
+# Install app
+make install
+```
+
+### Testing
+
+```shell
+# Run unit tests 
+make test
+```
+
+### Development & Debugging
+
 1. You can run the [Flask web service](./src/product_service) locally. The local [configuration](./config.yml) uses an
    in-memory db.
 
    ```shell
-   # Using Powershell
-   poetry install
+   # With Makefile:
+   make run 
+   
+   # Or with Powershell:
    poetry run python .\src\product_service\app.py --config config.yml
    ```
 
