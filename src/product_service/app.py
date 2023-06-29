@@ -2,21 +2,12 @@ from argparse import ArgumentParser
 
 from flask import Flask
 
-from src.product_service.containers import AppContainer
+from src.product_service.containers.application import AppContainer
 from src.product_service.extensions.register_routes import register_routes
 
 
-def create_app(config) -> Flask:
-    container = AppContainer()
-    container.config.from_yaml(config)
-
-    container.init_resources()
-
-    db = container.db()
-    db.create_database()
-
+def create_app() -> Flask:
     app = Flask(__name__)
-    app.container = container
 
     register_routes(app)
 
@@ -36,8 +27,15 @@ if __name__ == "__main__":
         help=f"Defaults to `{default_config_path}` if not provided.")
 
     args = parser.parse_args()
-
     config_source = args.config
 
-    app = create_app(config_source)
+    container = AppContainer()
+    container.config.from_yaml(config_source)
+    container.init_resources()
+
+    db = container.gateways.db()
+    db.create_database()
+
+    app = create_app()
+    app.container = container
     app.run(debug=True, host="0.0.0.0")

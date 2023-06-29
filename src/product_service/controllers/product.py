@@ -7,13 +7,12 @@ from flask.views import MethodView
 from src.core.entities.product import Product
 from src.core.interfaces.product_repository import IProductRepository
 from src.infrastructure.data.repository.sql_alchemy_product_repository import ProductNotFoundError
-from src.product_service.containers import AppContainer
 
 
 class ProductListController(MethodView):
 
     @inject
-    def __init__(self, product_repository: IProductRepository = Provide[AppContainer.product_repository]):
+    def __init__(self, product_repository: IProductRepository = Provide["services.product_repository"]):
         self._product_repository = product_repository
         self._logger = logging.getLogger(__name__)
 
@@ -41,7 +40,7 @@ class ProductListController(MethodView):
 class ProductController(MethodView):
 
     @inject
-    def __init__(self, product_repository: IProductRepository = Provide[AppContainer.product_repository]):
+    def __init__(self, product_repository: IProductRepository = Provide["services.product_repository"]):
         self._product_repository = product_repository
         self._logger = logging.getLogger(self.__class__.__name__)
 
