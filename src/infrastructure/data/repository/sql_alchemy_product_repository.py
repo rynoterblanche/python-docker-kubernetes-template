@@ -29,7 +29,7 @@ class SqlAlchemyProductRepository(IProductRepository):
     def get_product(self, product_id: int) -> Product:
         self._logger.debug(f"Find product by id '{product_id}'")
         with self._session_factory() as session:
-            instance = session.query(ProductModel).get(product_id)
+            instance = session.get(ProductModel, product_id)
             if not instance:
                 raise ProductNotFoundError(product_id)
             product = ProductOrmEntityMapper.map_to_entity(instance)
