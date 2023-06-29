@@ -51,7 +51,7 @@ The application follows a Clean Architecture design.
 
 ### Installation
 
-In Linux, macOS or Windows (WSL):
+In Linux, macOS or Windows WSL:
 
 ```shell
 # Install Poetry
@@ -60,6 +60,14 @@ make setup
 # Install app
 make install
 ```
+
+or using Windows Powershell / Command Prompt:
+
+1. Download & install [Poetry](https://install.python-poetry.org)
+2. Run installation:
+   ```shell
+   poetry install
+   ```
 
 ### Testing
 
@@ -74,10 +82,10 @@ make test
    in-memory db.
 
    ```shell
-   # With Makefile:
-   make run 
+   # With Makefile (Linux, macOS or Windows WSL):
+   make run-product-service
    
-   # Or with Powershell:
+   # Or with Powershell / Command Prompt:
    poetry run python .\src\product_service\app.py --config config.yml
    ```
 
