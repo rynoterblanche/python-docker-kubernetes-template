@@ -72,8 +72,14 @@ or using Windows Powershell / Command Prompt:
 ### Testing
 
 ```shell
-# Run unit tests 
+# Run all tests
 make test
+
+# Run unit tests only
+make unit-test
+
+# Run functional tests only
+make functional-test
 ```
 
 ### Development & Debugging

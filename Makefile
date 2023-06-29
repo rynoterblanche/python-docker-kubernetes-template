@@ -14,14 +14,17 @@ install:
 .PHONY: unit-test
 unit-test:
 	@echo "== run unit tests"
-	APP_ENV=unit-test poetry run pytest tests/unit
+	poetry run pytest tests/unit
+
+.PHONY: functional-test
+functional-test:
+	@echo "== run functional tests"
+	poetry run pytest tests/functional
 
 .PHONY: test
-test: unit-test
+test: unit-test functional-test
 
 .PHONY: run-product-service
 run-product-service:
 	@echo "== running product service"
 	poetry run python ./src/product_service/app.py --config config.yml
-
-
