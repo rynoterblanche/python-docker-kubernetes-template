@@ -6,7 +6,7 @@ metadata:
   name: products-api-env
 data:
   PRODUCTS_API_ENV: production
-
+  PRODUCTS_DB_USER: root
 ---
 
 apiVersion: apps/v1
@@ -32,7 +32,12 @@ spec:
                 configMapKeyRef:
                   key: PRODUCTS_API_ENV
                   name: products-api-env
-            - name: MYSQL_USER_PASSWORD
+            - name: PRODUCTS_DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: PRODUCTS_DB_USER
+                  name: products-api-env
+            - name: PRODUCTS_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-passwords
